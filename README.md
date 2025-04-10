@@ -1,6 +1,10 @@
-# Stack
+# Sewing Company Ecommerce Platform
 
-## Frontend
+This project is a full-stack e-commerce platform for a sewing company, built using the following technology stack:
+
+## Tech Stack
+
+**Frontend:**
 - **Framework:** React (using Next.js)
 - **Language:** Typescript
 - **Styling:** Tailwind CSS
@@ -8,25 +12,86 @@
 - **UI Component:** Shadcn/ui
 - **Admin Panel:** React (using Next.js)
 
-## Backend
+**Backend:**
 - **Language and Framework:** Node.js with NestJS
 - **API Design:** REST API
 - **Authentication:** JWT
-- **Database:** PostreSQL
+- **Database:** PostgreSQL
 - **ORM:** Prisma
 
-## Payments
+**Payments:**
 - Stripe
 
-## Deployment and Infrastructure
+**Deployment and Infrastructure:**
 - **Containerization:** Docker
 - **Cloud Platform:** AWS
 - **CI/CD:** GitHub Actions
 
-## Testing
+**Testing:**
 - **Unit Testing:** Jest
 - **Integration Testing:** Jest
 - **End-to-End Testing:** Playwright
+
+## Getting Started
+
+To run the project locally, you need to start each part separately. Make sure you have Node.js and npm installed.
+
+### Frontend Application
+
+1.  Navigate to the frontend directory:
+    ```bash
+    cd frontend
+    ```
+
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+
+3.  Start the development server:
+    ```bash
+    npm run dev
+    ```
+
+4.  Access the frontend in your browser at: `http://localhost:3000`
+
+### Admin Panel Application
+
+1.  Navigate to the admin panel directory:
+    ```bash
+    cd admin-panel
+    ```
+
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+
+3.  Start the development server (on port 3002):
+    ```bash
+    npm run dev -- --port 3002
+    ```
+
+4.  Access the admin panel in your browser at: `http://localhost:3002`
+
+### Backend API Application
+
+1.  Navigate to the backend directory:
+    ```bash
+    cd backend
+    ```
+
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+
+4.  Start the development server:
+    ```bash
+    npm run start:dev
+    ```
+
+5.  The backend API will be running at: `http://localhost:3001`. You can test it by accessing `http://localhost:3001` in your browser or using a tool like `curl` to check for the default "Hello World!" message.
 
 # Blueprint
 
