@@ -1,7 +1,10 @@
-export default function Home() {
+import { Button } from "@/components/ui/button"; // Adjust import path if needed
+
+export default function HomePage() {
   return (
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
-  )
+    <div className="p-4"> {/* Using a Tailwind utility class */}
+      <h1 className="text-xl font-bold mb-4">Welcome</h1> {/* More Tailwind */}
+      <Button>Click Me (Shadcn Button)</Button> {/* Using Shadcn component */}
+    </div>
+  );
 }
