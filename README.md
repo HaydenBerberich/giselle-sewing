@@ -97,11 +97,11 @@ To run the project locally, you need to start each part separately. Make sure yo
 
 ## Phase 0: Project Setup & Foundational Planning
 
-1.  Initialize Version Control: Set up a Git repository (e.g., on GitHub, GitLab).
-2.  Project Structure: Decide on monorepo vs. separate repositories for frontend, backend, and admin panel. Set up the chosen structure.
-3.  Initialize Frontend (Next.js): Create the Next.js application with TypeScript.
-4.  Initialize Admin Panel (Next.js): Create a separate Next.js application (or configure routes within the main frontend) for the admin panel with TypeScript.
-5.  Initialize Backend (NestJS): Create the NestJS application.
+1.  ✅ Initialize Version Control: Set up a Git repository (e.g., on GitHub, GitLab).
+2.  ✅ Project Structure: Decide on monorepo vs. separate repositories for frontend, backend, and admin panel. Set up the chosen structure.
+3.  ✅ Initialize Frontend (Next.js): Create the Next.js application with TypeScript.
+4.  ✅ Initialize Admin Panel (Next.js): Create a separate Next.js application (or configure routes within the main frontend) for the admin panel with TypeScript.
+5.  ✅ Initialize Backend (NestJS): Create the NestJS application.
 6.  Install Core Dependencies: Add necessary base dependencies to each project (e.g., Tailwind, Shadcn/ui, Zustand for frontend; Prisma, JWT libs for backend).
 7.  Configure Styling: Set up Tailwind CSS and integrate Shadcn/ui into both frontend and admin panel projects.
 8.  Database Setup: Set up your PostgreSQL database instance (locally or cloud-based for dev).
