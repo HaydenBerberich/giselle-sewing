@@ -102,7 +102,7 @@ To run the project locally, you need to start each part separately. Make sure yo
 3.  ✅ Initialize Frontend (Next.js): Create the Next.js application with TypeScript.
 4.  ✅ Initialize Admin Panel (Next.js): Create a separate Next.js application (or configure routes within the main frontend) for the admin panel with TypeScript.
 5.  ✅ Initialize Backend (NestJS): Create the NestJS application.
-6.  Install Core Dependencies: Add necessary base dependencies to each project (e.g., Tailwind, Shadcn/ui, Zustand for frontend; Prisma, JWT libs for backend).
+6.  ✅ Install Core Dependencies: Add necessary base dependencies to each project (e.g., Tailwind, Shadcn/ui, Zustand for frontend; Prisma, JWT libs for backend).
 7.  Configure Styling: Set up Tailwind CSS and integrate Shadcn/ui into both frontend and admin panel projects.
 8.  Database Setup: Set up your PostgreSQL database instance (locally or cloud-based for dev).
 9.  ORM Setup: Integrate Prisma into the NestJS project, connect it to the database, and define the initial database schema (e.g., User, Product, Category, Order models).
