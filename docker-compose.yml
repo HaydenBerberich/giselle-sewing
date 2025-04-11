@@ -1,0 +1,25 @@
+version: '3.8' # Specifies the Docker Compose file format version
+
+services:
+  db: # This is the service name we're giving our database container
+    image: postgres:15 # Use the official PostgreSQL image, specifying a version (e.g., 15) is recommended
+    container_name: sewing_db_dev # A custom name for the container (optional but helpful)
+    restart: unless-stopped # Policy to restart the container if it stops unexpectedly
+    ports:
+      # Maps port 5432 on your host machine to port 5432 inside the container
+      # Format: "HOST_PORT:CONTAINER_PORT"
+      - "5432:5432"
+    environment:
+      # Set environment variables required by the postgres image
+      POSTGRES_USER: ${POSTGRES_USER:-postgres} # Default user 'postgres' if not set in .env
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password} # Default password 'password' if not set in .env
+      POSTGRES_DB: ${POSTGRES_DB:-sewing_dev} # Default database name 'sewing_dev' if not set in .env
+    volumes:
+      # Mounts a named volume 'pgdata' to the container's data directory
+      # This persists your database data even if the container is removed and recreated
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  # Declares the named volume used above
+  pgdata:
+    driver: local # Specifies the local driver for the volume

@@ -34,64 +34,112 @@ This project is a full-stack e-commerce platform for a sewing company, built usi
 
 ## Getting Started
 
-To run the project locally, you need to start each part separately. Make sure you have Node.js and npm installed.
+This guide explains how to set up and run the project locally for development.
 
-### Frontend Application
+**Prerequisites:**
 
-1.  Navigate to the frontend directory:
+*   **Node.js:** Ensure you have Node.js installed (which includes npm).
+*   **Docker:** Ensure you have Docker installed and running.
+*   **Docker Compose:** Ensure you have Docker Compose installed (often included with Docker Desktop).
+
+**1. Environment Setup:**
+
+*   In the root directory of the project, you will find a file named `.env.example`.
+*   **Copy** this file and rename the copy to `.env`.
     ```bash
-    cd frontend
+    cp .env.example .env
     ```
+*   **Edit** the `.env` file and fill in your desired PostgreSQL credentials. **Choose a strong password!**
 
-2.  Install dependencies:
+    ```env
+    # .env file
+
+    # PostgreSQL Credentials
+    POSTGRES_USER=your_db_user        # Choose a username
+    POSTGRES_PASSWORD=your_strong_password # CHOOSE A STRONG PASSWORD HERE!
+    POSTGRES_DB=your_db_name              # Choose a database name
+    ```
+*   **Important:** Make sure the `.env` file is added to your `.gitignore` file to avoid committing sensitive credentials to version control.
+
+**2. Database Setup (using Docker):**
+
+*   Navigate to the **root directory** of the project (where the `docker-compose.yml` file is located).
+*   Start the PostgreSQL database container in the background:
     ```bash
-    npm install
+    docker-compose up -d
     ```
-
-3.  Start the development server:
+*   This command will download the PostgreSQL image (if needed) and start the database service defined in `docker-compose.yml`, using the credentials from your `.env` file. The `-d` flag runs it in detached mode.
+*   You can verify the database container is running with:
     ```bash
-    npm run dev
+    docker-compose ps
     ```
-
-4.  Access the frontend in your browser at: `http://localhost:3000`
-
-### Admin Panel Application
-
-1.  Navigate to the admin panel directory:
+*   To stop the database container when you are finished:
     ```bash
-    cd admin-panel
+    docker-compose down
     ```
+    *(Your data will persist between runs because a Docker volume is used).*
 
-2.  Install dependencies:
+**3. Backend API Application:**
+
+*   **Important:** Ensure the Database container from Step 2 is running before starting the backend.
+*   Navigate to the backend directory:
     ```bash
-    npm install
+    cd backend # Or your actual backend directory name, e.g., backend-api
     ```
-
-3.  Start the development server (on port 3002):
+*   Install dependencies:
     ```bash
-    npm run dev -- --port 3002
+    npm install # or yarn install
     ```
-
-4.  Access the admin panel in your browser at: `http://localhost:3002`
-
-### Backend API Application
-
-1.  Navigate to the backend directory:
+*   **(Configuration Note):** Make sure the backend is configured to run on port 3001. This is typically done by editing `src/main.ts` and changing `app.listen(3000)` to `app.listen(3001)`.
+*   Start the development server:
     ```bash
-    cd backend
+    npm run start:dev # or yarn start:dev
     ```
+*   The backend API will be running at: `http://localhost:3001`.
 
-2.  Install dependencies:
+**4. Frontend Application:**
+
+*   Navigate to the frontend directory:
     ```bash
-    npm install
+    cd frontend # Or your actual frontend directory name, e.g., frontend-app
     ```
-
-4.  Start the development server:
+*   Install dependencies:
     ```bash
-    npm run start:dev
+    npm install # or yarn install
     ```
+*   Start the development server:
+    ```bash
+    npm run dev # or yarn dev
+    ```
+*   Access the frontend in your browser at: `http://localhost:3000`
 
-5.  The backend API will be running at: `http://localhost:3001`. You can test it by accessing `http://localhost:3001` in your browser or using a tool like `curl` to check for the default "Hello World!" message.
+**5. Admin Panel Application:**
+
+*   Navigate to the admin panel directory:
+    ```bash
+    cd admin-panel # Or your actual admin panel directory name
+    ```
+*   Install dependencies:
+    ```bash
+    npm install # or yarn install
+    ```
+*   Start the development server (on port 3002):
+    ```bash
+    npm run dev -- --port 3002 # or yarn dev -p 3002
+    ```
+*   Access the admin panel in your browser at: `http://localhost:3002`
+
+---
+
+**(Optional) Verifying Database Connection:**
+
+After starting the database container (Step 2), you can optionally verify the connection using a tool like `psql` (if installed) or a GUI database client (like DBeaver or pgAdmin) using the credentials from your `.env` file and connecting to `localhost` on port `5432`.
+
+```bash
+# Example using psql (if installed)
+psql -h localhost -p 5432 -U your_db_user -d your_db_name
+# You will be prompted for your password
+```
 
 # Blueprint
 
@@ -104,7 +152,7 @@ To run the project locally, you need to start each part separately. Make sure yo
 5.  ✅ Initialize Backend (NestJS): Create the NestJS application.
 6.  ✅ Install Core Dependencies: Add necessary base dependencies to each project (e.g., Tailwind, Shadcn/ui, Zustand for frontend; Prisma, JWT libs for backend).
 7.  ✅ Configure Styling: Set up Tailwind CSS and integrate Shadcn/ui into both frontend and admin panel projects.
-8.  Database Setup: Set up your PostgreSQL database instance (locally or cloud-based for dev).
+8.  ✅ Database Setup: Set up your PostgreSQL database instance (locally or cloud-based for dev).
 9.  ORM Setup: Integrate Prisma into the NestJS project, connect it to the database, and define the initial database schema (e.g., User, Product, Category, Order models).
 10. Generate Initial Migration: Create and run the first Prisma migration based on the initial schema.
 11. Basic Environment Configuration: Set up `.env` files for managing environment variables (database URLs, JWT secrets, etc.).
