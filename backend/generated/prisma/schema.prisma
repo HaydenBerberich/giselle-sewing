@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String // Store hashed passwords, not plaintext!
+  name      String? // Optional name
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[] // Relation: A user can have multiple orders
+
+  @@map("users") // Maps the model name 'User' to the table name 'users' in the database
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  products Product[] // Relation: A category can have multiple products
+
+  @@map("categories")
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  price       Decimal  @db.Decimal(10, 2) // Example: Up to 10 digits total, 2 after the decimal
+  stock       Int      @default(0)
+  images      String[] // Array of image URLs/paths
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  categoryId Int // Foreign key field for Category
+  category   Category @relation(fields: [categoryId], references: [id]) // Relation: A product belongs to one category
+
+  orderItems OrderItem[] // Relation: A product can be in multiple order items
+
+  @@map("products")
+}
+
+model Order {
+  id          Int      @id @default(autoincrement())
+  totalAmount Decimal  @db.Decimal(10, 2)
+  status      String   @default("PENDING") // e.g., PENDING, PROCESSING, SHIPPED, DELIVERED, CANCELLED
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  userId Int // Foreign key field for User
+  user   User @relation(fields: [userId], references: [id]) // Relation: An order belongs to one user
+
+  items OrderItem[] // Relation: An order has multiple items
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id              Int     @id @default(autoincrement())
+  quantity        Int
+  priceAtPurchase Decimal @db.Decimal(10, 2) // Price of the product when the order was placed
+
+  orderId Int // Foreign key field for Order
+  order   Order @relation(fields: [orderId], references: [id]) // Relation: An order item belongs to one order
+
+  productId Int // Foreign key field for Product
+  product   Product @relation(fields: [productId], references: [id]) // Relation: An order item refers to one product
+
+  @@unique([orderId, productId]) // Ensure a product appears only once per order (adjust quantity instead)
+  @@map("order_items")
+}

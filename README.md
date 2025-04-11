@@ -44,35 +44,51 @@ This guide explains how to set up and run the project locally for development.
 
 **1. Environment Setup:**
 
-*   In the root directory of the project, you will find a file named `.env.example`.
-*   **Copy** this file and rename the copy to `.env`.
-    ```bash
-    cp .env.example .env
-    ```
-*   **Edit** the `.env` file and fill in your desired PostgreSQL credentials. **Choose a strong password!**
+*   **Root `.env` for Database:**
+    *   In the **root directory** of the project, you will find a file named `.env.example`.
+    *   Copy this file and rename the copy to `.env`:
+        ```bash
+        cp .env.example .env
+        ```
+    *   Edit the root `.env` file and fill in your desired PostgreSQL credentials (`POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`). **Choose a strong password!** This file provides credentials for the Docker container.
+        ```env
+        # Root .env file
+        POSTGRES_USER=your_db_user
+        POSTGRES_PASSWORD=your_strong_password
+        POSTGRES_DB=your_db_name
+        ```
+*   **Backend `.env` for Prisma:**
+    *   Navigate to the **backend** directory (e.g., `backend`).
+    *   You will find a `.env.example` file specifically for the backend.
+    *   Copy this file and rename the copy to `.env`:
+        ```bash
+        cd backend
+        cp .env.example .env
+        cd .. # Go back to root or previous directory
+        ```
+    *   Edit the `backend/.env` file. Ensure the `DATABASE_URL` uses the **same** credentials you set in the root `.env` file.
+        ```env
+        # backend/.env
+        DATABASE_URL="postgresql://your_db_user:your_strong_password@localhost:5432/your_db_name?schema=public"
+        ```
+*   **Important:** Make sure both `.env` files (root and backend) are added to your `.gitignore` file to avoid committing sensitive credentials.
 
-    ```env
-    # .env file
-
-    # PostgreSQL Credentials
-    POSTGRES_USER=your_db_user        # Choose a username
-    POSTGRES_PASSWORD=your_strong_password # CHOOSE A STRONG PASSWORD HERE!
-    POSTGRES_DB=your_db_name              # Choose a database name
-    ```
-*   **Important:** Make sure the `.env` file is added to your `.gitignore` file to avoid committing sensitive credentials to version control.
-
-**2. Database Setup (using Docker):**
+**2. Database Setup & Initial Migration:**
 
 *   Navigate to the **root directory** of the project (where the `docker-compose.yml` file is located).
-*   Start the PostgreSQL database container in the background:
+*   **Start the PostgreSQL database container** in the background:
     ```bash
     docker-compose up -d
     ```
-*   This command will download the PostgreSQL image (if needed) and start the database service defined in `docker-compose.yml`, using the credentials from your `.env` file. The `-d` flag runs it in detached mode.
-*   You can verify the database container is running with:
-    ```bash
-    docker-compose ps
-    ```
+*   You can verify the database container is running with `docker-compose ps`.
+*   **Run the initial database migration:**
+    *   Navigate to the **backend** directory.
+    *   Execute the Prisma migrate command. This applies the schema defined in `prisma/schema.prisma` to the running database.
+        ```bash
+        cd backend # Or your actual backend directory name
+        npx prisma migrate dev --name init
+        ```
+    *   *(You only need to run `prisma migrate dev` initially and whenever you change the `schema.prisma` file during development).*
 *   To stop the database container when you are finished:
     ```bash
     docker-compose down
@@ -81,16 +97,16 @@ This guide explains how to set up and run the project locally for development.
 
 **3. Backend API Application:**
 
-*   **Important:** Ensure the Database container from Step 2 is running before starting the backend.
-*   Navigate to the backend directory:
+*   **Important:** Ensure the Database container from Step 2 is running and the initial migration has been applied before starting the backend.
+*   Navigate to the **backend** directory:
     ```bash
-    cd backend # Or your actual backend directory name, e.g., backend-api
+    cd backend # Or your actual backend directory name
     ```
-*   Install dependencies:
+*   Install dependencies (if you haven't already):
     ```bash
     npm install # or yarn install
     ```
-*   **(Configuration Note):** Make sure the backend is configured to run on port 3001. This is typically done by editing `src/main.ts` and changing `app.listen(3000)` to `app.listen(3001)`.
+*   **(Configuration Note):** Ensure the backend is configured to run on port 3001 (e.g., in `src/main.ts`).
 *   Start the development server:
     ```bash
     npm run start:dev # or yarn start:dev
@@ -99,11 +115,11 @@ This guide explains how to set up and run the project locally for development.
 
 **4. Frontend Application:**
 
-*   Navigate to the frontend directory:
+*   Navigate to the **frontend** directory:
     ```bash
-    cd frontend # Or your actual frontend directory name, e.g., frontend-app
+    cd frontend-app # Or your actual frontend directory name
     ```
-*   Install dependencies:
+*   Install dependencies (if you haven't already):
     ```bash
     npm install # or yarn install
     ```
@@ -115,11 +131,11 @@ This guide explains how to set up and run the project locally for development.
 
 **5. Admin Panel Application:**
 
-*   Navigate to the admin panel directory:
+*   Navigate to the **admin panel** directory:
     ```bash
     cd admin-panel # Or your actual admin panel directory name
     ```
-*   Install dependencies:
+*   Install dependencies (if you haven't already):
     ```bash
     npm install # or yarn install
     ```
@@ -133,12 +149,12 @@ This guide explains how to set up and run the project locally for development.
 
 **(Optional) Verifying Database Connection:**
 
-After starting the database container (Step 2), you can optionally verify the connection using a tool like `psql` (if installed) or a GUI database client (like DBeaver or pgAdmin) using the credentials from your `.env` file and connecting to `localhost` on port `5432`.
+After starting the database container (Step 2), you can optionally verify the connection using a tool like `psql` or a GUI client using the credentials from your **root `.env` file** and connecting to `localhost` on port `5432`. After running the migration, you can also use these tools to inspect the tables (`users`, `products`, etc.) that were created.
 
 ```bash
 # Example using psql (if installed)
 psql -h localhost -p 5432 -U your_db_user -d your_db_name
-# You will be prompted for your password
+# You will be prompted for your password. Once connected, try \dt to list tables.
 ```
 
 # Blueprint
