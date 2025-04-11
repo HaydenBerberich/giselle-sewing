@@ -169,7 +169,7 @@ psql -h localhost -p 5432 -U your_db_user -d your_db_name
 6.  ✅ Install Core Dependencies: Add necessary base dependencies to each project (e.g., Tailwind, Shadcn/ui, Zustand for frontend; Prisma, JWT libs for backend).
 7.  ✅ Configure Styling: Set up Tailwind CSS and integrate Shadcn/ui into both frontend and admin panel projects.
 8.  ✅ Database Setup: Set up your PostgreSQL database instance (locally or cloud-based for dev).
-9.  ORM Setup: Integrate Prisma into the NestJS project, connect it to the database, and define the initial database schema (e.g., User, Product, Category, Order models).
+9.  ✅ ORM Setup: Integrate Prisma into the NestJS project, connect it to the database, and define the initial database schema (e.g., User, Product, Category, Order models).
 10. Generate Initial Migration: Create and run the first Prisma migration based on the initial schema.
 11. Basic Environment Configuration: Set up `.env` files for managing environment variables (database URLs, JWT secrets, etc.).
 
